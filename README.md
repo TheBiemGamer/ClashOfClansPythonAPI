@@ -1,4 +1,5 @@
 # Clash of Clans Python API Wrapper
+[![PyPI - Version](https://img.shields.io/pypi/v/clash-of-clans-python-api)](https://pypi.org/project/clash-of-clans-python-api/)
 
 An (in development) **asynchronous Python wrapper** for the official Clash of Clans API.  
 This library simplifies accessing player and clan data, handling authentication, HTTP requests, and response parsing.
