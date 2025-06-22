@@ -4,6 +4,7 @@ from httpx import HTTPStatusError
 
 from coc_api.endpoints.players import PlayerEndpoints
 from coc_api.endpoints.clan import ClanEndpoints
+from coc_api.exceptions import InvalidTokenError
 
 BASE_URL = "https://api.clashofclans.com/v1"
 PROXY_URL = "https://cocproxy.royaleapi.dev/v1"
@@ -21,6 +22,9 @@ class ClashOfClansAPI:
         proxy (bool, optional): Whether to route requests through RoyaleAPI's proxy. Defaults to False.
     """
     def __init__(self, token: str, timeout: int = 10, proxy: bool = False):
+        if not token:
+            raise InvalidTokenError("API token must be provided and cannot be empty.")
+
         self.token = token
         self.headers = {
             "Accept": "application/json",
