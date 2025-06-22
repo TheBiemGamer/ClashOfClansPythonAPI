@@ -29,7 +29,6 @@ class Player:
         self.clan_capital_contributions: int = data.get("clanCapitalContributions")
         self.clan: Optional[Clan] = None
         clan_data: dict = data.get("clan", {})
-        
         if clan_data:
             self.clan = Clan(clan_data)
         self.league: League = League(data.get("league", {}))
