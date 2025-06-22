@@ -1,9 +1,6 @@
 from dataclasses import dataclass, field
 from typing import List, Optional, Literal, Dict, Any
-from coc_api.models.location import Location
-from coc_api.models.league import League
-from coc_api.models.label import Label
-from coc_api.models.clan_captical import ClanCapital
+from coc_api.models import Location, League, Label, ClanCapital
 
 @dataclass
 class Clan:

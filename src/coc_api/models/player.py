@@ -1,14 +1,6 @@
 from dataclasses import dataclass, field
 from typing import Optional, List, Dict, Any
-from coc_api.models.clan import Clan
-from coc_api.models.league import League
-from coc_api.models.achievement import Achievement
-from coc_api.models.troop import Troop
-from coc_api.models.hero import Hero
-from coc_api.models.heroes import Heroes
-from coc_api.models.equipment import Equipment
-from coc_api.models.spell import Spell
-from coc_api.models.label import Label
+from coc_api.models import Clan, League, Achievement, Troop, Hero, Heroes, Equipment, Spell, Label
 
 @dataclass
 class Player:

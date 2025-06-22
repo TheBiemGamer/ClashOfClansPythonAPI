@@ -1,6 +1,6 @@
 from dataclasses import dataclass, field
 from typing import List, Dict, Any
-from coc_api.models.district import District
+from coc_api.models import District
 
 @dataclass
 class ClanCapital:

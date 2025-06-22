@@ -2,8 +2,8 @@ import httpx
 from typing import Optional
 from httpx import HTTPStatusError
 
-from coc_api.endpoints.players import PlayerEndpoints
-from coc_api.endpoints.clan import ClanEndpoints
+from coc_api.endpoints import PlayerEndpoints
+from coc_api.endpoints import ClanEndpoints
 from coc_api.exceptions import InvalidTokenError
 
 BASE_URL = "https://api.clashofclans.com/v1"

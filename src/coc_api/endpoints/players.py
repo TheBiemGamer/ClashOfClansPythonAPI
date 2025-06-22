@@ -1,10 +1,10 @@
 from __future__ import annotations
 from typing import TYPE_CHECKING
 from urllib.parse import quote
-from coc_api.models.player import Player
+from coc_api.models import Player
 
 if TYPE_CHECKING:
-    from coc_api.client import ClashOfClansAPI
+    from coc_api import ClashOfClansAPI
 
 class PlayerEndpoints:
     """

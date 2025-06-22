@@ -1,6 +1,6 @@
 from dataclasses import dataclass, field
 from typing import List, Dict, Optional, Iterator
-from coc_api.models.hero import Hero
+from coc_api.models import Hero
 
 @dataclass
 class Heroes:
