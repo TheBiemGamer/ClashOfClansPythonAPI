@@ -5,7 +5,7 @@ from typing import Optional, List, Dict, Any, TYPE_CHECKING
 if TYPE_CHECKING:
     from coc_api.models import (
         Clan, League, Achievement, Troop,
-        Heroes, Equipment, Spell, Label, ClanCapitalHouse
+        Hero, Equipment, Spell, Label, ClanCapitalHouse
     )
 
 @dataclass
@@ -33,7 +33,7 @@ class Player:
     player_house: List["ClanCapitalHouse"] = field(default_factory=list)
     labels: List["Label"] = field(default_factory=list)
     troops: List["Troop"] = field(default_factory=list)
-    heroes: "Heroes" = field(default_factory="Heroes")
+    heroes: List["Hero"] = field(default_factory=list)
     hero_equipment: List["Equipment"] = field(default_factory=list)
     spells: List["Spell"] = field(default_factory=list)
 
@@ -41,7 +41,7 @@ class Player:
     def from_dict(cls, data: Dict[str, Any]) -> Player:
         from coc_api.models import (
             Clan, League, Achievement, Troop, Hero,
-            Heroes, Equipment, Spell, Label, ClanCapitalHouse
+            Equipment, Spell, Label, ClanCapitalHouse
         )
 
         clan_data = data.get("clan")
@@ -49,8 +49,7 @@ class Player:
         achievements = [Achievement.from_dict(a) for a in data.get("achievements", [])]
         labels = [Label.from_dict(l) for l in data.get("labels", [])]
         troops = [Troop.from_dict(t) for t in data.get("troops", [])]
-        heroes_list = [Hero.from_dict(h) for h in data.get("heroes", [])]
-        heroes = Heroes(heroes_list)
+        heroes = [Hero.from_dict(h) for h in data.get("heroes", [])]
         hero_equipment = [Equipment.from_dict(e) for e in data.get("heroEquipment", [])]
         spells = [Spell.from_dict(s) for s in data.get("spells", [])]
         player_house = [ClanCapitalHouse.from_dict(c) for c in data.get("playerHouse", {}).get("elements", [])]

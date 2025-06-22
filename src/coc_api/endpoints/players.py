@@ -13,7 +13,7 @@ class PlayerEndpoints:
     Args:
         api (ClashOfClansAPI): Instance of the main API client.
     """
-    def __init__(self, api: ClashOfClansAPI):
+    def __init__(self, api: 'ClashOfClansAPI'):
         self.api = api
 
     async def get(self, player_tag: str) -> Player:
@@ -32,7 +32,7 @@ class PlayerEndpoints:
         """
         encoded_tag = quote(player_tag)
         data = await self.api._get(f"/players/{encoded_tag}")
-        return Player.from_dict(data)
+        return Player.from_dict(data) 
     
     async def verify_token(self, player_tag: str, token: str) -> dict:
         """

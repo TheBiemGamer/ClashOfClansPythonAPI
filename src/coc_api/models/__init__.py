@@ -4,7 +4,6 @@ from .clan import Clan
 from .district import District
 from .equipment import Equipment
 from .hero import Hero
-from .heroes import Heroes
 from .label import Label
 from .league import League
 from .location import Location
@@ -20,7 +19,6 @@ __all__ = [
     "District",
     "Equipment",
     "Hero",
-    "Heroes",
     "Label",
     "League",
     "Location",
