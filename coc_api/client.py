@@ -3,19 +3,21 @@ from typing import Optional
 from httpx import HTTPStatusError
 
 BASE_URL = "https://api.clashofclans.com/v1"
+PROXY_URL = "https://cocproxy.royaleapi.dev/v1"
 
 class ClashOfClansAPI:
-    def __init__(self, token: str, timeout: int = 10):
+    def __init__(self, token: str, timeout: int = 10, proxy: bool = False):
         self.token = token
         self.headers = {
             "Accept": "application/json",
             "Authorization": f"Bearer {self.token}"
         }
         self.client = httpx.AsyncClient(headers=self.headers, timeout=timeout)
+        self.proxy = proxy
 
     async def _get(self, endpoint: str, params: Optional[dict] = None):
         try:
-            response = await self.client.get(f"{BASE_URL}{endpoint}", params=params)
+            response = await self.client.get(f"{PROXY_URL if self.proxy else BASE_URL}{endpoint}", params=params)
             response.raise_for_status()
             return response.json()
         except HTTPStatusError as http_err:
