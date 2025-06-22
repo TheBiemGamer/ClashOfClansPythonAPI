@@ -1,6 +1,9 @@
+from __future__ import annotations
 from dataclasses import dataclass, field
-from typing import List, Optional, Literal, Dict, Any
-from coc_api.models import Location, League, Label, ClanCapital
+from typing import List, Optional, Literal, Dict, Any, TYPE_CHECKING
+
+if TYPE_CHECKING:
+    from coc_api.models import Location, League, Label, ClanCapital, Player
 
 @dataclass
 class Clan:
@@ -8,14 +11,14 @@ class Clan:
     name: Optional[str]
     type: Optional[str]
     description: Optional[str]
-    location: Location
+    location: 'Location'
     is_family_friendly: Optional[bool]
     icon: Optional[str]
     clan_level: Optional[int]
     clan_points: Optional[int]
     clan_builder_base_points: Optional[int]
     clan_capital_points: Optional[int]
-    captical_league: League
+    captical_league: 'League'
     required_trophies: Optional[int]
     war_frequency: Optional[str]
     war_win_streak: Optional[int]
@@ -23,17 +26,17 @@ class Clan:
     war_ties: Optional[int]
     war_losses: Optional[int]
     is_war_log_public: Optional[bool]
-    war_league: League
+    war_league: 'League'
     members: Optional[int]
     member_list: List['Player'] = field(default_factory=list)
-    labels: List[Label] = field(default_factory=list)
+    labels: List['Label'] = field(default_factory=list)
     required_builder_base_trophies: Optional[int] = None
     required_townhall_level: Optional[int] = None
-    clan_captial: Optional[ClanCapital] = None
+    clan_captial: Optional['ClanCapital'] = None
 
     @classmethod
     def from_dict(cls, data: Dict[str, Any], icon_size: Literal["small", "medium", "large"] = "small") -> 'Clan':
-        from coc_api.models.player import Player
+        from coc_api.models import Location, League, Label, ClanCapital, Player
 
         location = Location.from_dict(data.get("location", {}))
         captical_league = League.from_dict(data.get("capitalLeague", {}))

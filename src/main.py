@@ -18,10 +18,7 @@ async def main() -> None:
     try:
         # Fetch player data
         player: Player = await api.players.get(PLAYER_TAG)
-        print("Player Info:")
-        print(f"Name: {player.name}")
-        print(f"Town Hall Level: {player.town_hall_level}")
-        print(f"Clan: {player.clan.name if player.clan else 'No clan'}")
+        print(player.clan)
     except Exception as e:
         print("An error occurred while fetching player data:")
         print(repr(e))

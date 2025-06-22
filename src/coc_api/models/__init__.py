@@ -1,5 +1,5 @@
 from .achievement import Achievement
-from .clan_captical import ClanCapital
+from .clan_capital import ClanCapital
 from .clan import Clan
 from .district import District
 from .equipment import Equipment
@@ -11,6 +11,7 @@ from .location import Location
 from .player import Player
 from .spell import Spell
 from .troop import Troop
+from .clan_capital_house import ClanCapitalHouse
 
 __all__ = [
     "Achievement",
@@ -26,4 +27,5 @@ __all__ = [
     "Player",
     "Spell",
     "Troop",
+    "ClanCapitalHouse",
 ]

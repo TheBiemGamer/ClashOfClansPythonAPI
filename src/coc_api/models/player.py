@@ -1,6 +1,12 @@
+from __future__ import annotations
 from dataclasses import dataclass, field
-from typing import Optional, List, Dict, Any
-from coc_api.models import Clan, League, Achievement, Troop, Hero, Heroes, Equipment, Spell, Label
+from typing import Optional, List, Dict, Any, TYPE_CHECKING
+
+if TYPE_CHECKING:
+    from coc_api.models import (
+        Clan, League, Achievement, Troop,
+        Heroes, Equipment, Spell, Label, ClanCapitalHouse
+    )
 
 @dataclass
 class Player:
@@ -20,18 +26,24 @@ class Player:
     donations: Optional[int]
     donations_received: Optional[int]
     clan_capital_contributions: Optional[int]
-    clan: Optional[Clan]
-    league: League
-    builder_league: League
-    achievements: List[Achievement] = field(default_factory=list)
-    labels: List[Label] = field(default_factory=list)
-    troops: List[Troop] = field(default_factory=list)
-    heroes: Heroes = field(default_factory=Heroes)
-    hero_equipment: List[Equipment] = field(default_factory=list)
-    spells: List[Spell] = field(default_factory=list)
+    clan: Optional["Clan"]
+    league: "League"
+    builder_league: "League"
+    achievements: List["Achievement"] = field(default_factory=list)
+    player_house: List["ClanCapitalHouse"] = field(default_factory=list)
+    labels: List["Label"] = field(default_factory=list)
+    troops: List["Troop"] = field(default_factory=list)
+    heroes: "Heroes" = field(default_factory="Heroes")
+    hero_equipment: List["Equipment"] = field(default_factory=list)
+    spells: List["Spell"] = field(default_factory=list)
 
     @classmethod
-    def from_dict(cls, data: Dict[str, Any]) -> 'Player':
+    def from_dict(cls, data: Dict[str, Any]) -> Player:
+        from coc_api.models import (
+            Clan, League, Achievement, Troop, Hero,
+            Heroes, Equipment, Spell, Label, ClanCapitalHouse
+        )
+
         clan_data = data.get("clan")
         clan = Clan.from_dict(clan_data) if clan_data else None
         achievements = [Achievement.from_dict(a) for a in data.get("achievements", [])]
@@ -41,6 +53,7 @@ class Player:
         heroes = Heroes(heroes_list)
         hero_equipment = [Equipment.from_dict(e) for e in data.get("heroEquipment", [])]
         spells = [Spell.from_dict(s) for s in data.get("spells", [])]
+        player_house = [ClanCapitalHouse.from_dict(c) for c in data.get("playerHouse", {}).get("elements", [])]
 
         return cls(
             tag=data.get("tag"),
@@ -67,5 +80,6 @@ class Player:
             troops=troops,
             heroes=heroes,
             hero_equipment=hero_equipment,
-            spells=spells
+            spells=spells,
+            player_house=player_house
         )
