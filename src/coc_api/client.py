@@ -58,6 +58,10 @@ class ClashOfClansAPI:
             response.raise_for_status()
             return response.json()
         except HTTPStatusError as http_err:
+            if http_err.response.status_code == 403 and http_err.response.json().get("reason") == "accessDenied":
+                raise InvalidTokenError("Incorrect API token.")
+            elif http_err.response.status_code == 403 and http_err.response.json().get("reason") == "accessDenied.invalidIp":
+                raise InvalidTokenError(f"{http_err.response.json().get("message").lstrip("Invalid authorization:")}.")
             print(f"HTTP error: {http_err.response.status_code} - {http_err.response.text}")
             raise
         except Exception as err:

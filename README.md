@@ -6,7 +6,7 @@ This library simplifies accessing player and clan data, handling authentication,
 ## Installation
 
 ```bash
-pip install -i https://test.pypi.org/simple/ clash-of-clans-api
+pip install clash-of-clans-python-api
 ````
 
 ## Usage Example
