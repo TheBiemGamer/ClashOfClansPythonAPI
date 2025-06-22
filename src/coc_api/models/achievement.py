@@ -1,19 +1,23 @@
-class Achievement:
-    def __init__(self, data):
-        self.name = data.get("name")
-        self.stars = data.get("stars")
-        self.value = data.get("value")
-        self.target = data.get("target")
-        self.info = data.get("info")
-        self.completion_info = data.get("completionInfo")
-        self.village = data.get("village")
+from dataclasses import dataclass
 
-    def to_dict(self):
-        return vars(self)
-    
-    def __str__(self):
-        import json
-        return json.dumps(self.to_dict(), indent=2)
-    
-    def __repr__(self):
-        return str(self)
+@dataclass
+class Achievement:
+    name: str
+    stars: int
+    value: int
+    target: int
+    info: str
+    completion_info: str
+    village: str
+
+    @classmethod
+    def from_dict(cls, data: dict) -> 'Achievement':
+        return cls(
+            name=data.get("name"),
+            stars=data.get("stars"),
+            value=data.get("value"),
+            target=data.get("target"),
+            info=data.get("info"),
+            completion_info=data.get("completionInfo"),
+            village=data.get("village")
+        )

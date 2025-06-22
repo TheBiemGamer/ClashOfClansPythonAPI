@@ -1,3 +1,5 @@
+from dataclasses import dataclass, field
+from typing import Optional, List, Dict, Any
 from coc_api.models.clan import Clan
 from coc_api.models.league import League
 from coc_api.models.achievement import Achievement
@@ -7,56 +9,71 @@ from coc_api.models.heroes import Heroes
 from coc_api.models.equipment import Equipment
 from coc_api.models.spell import Spell
 from coc_api.models.label import Label
-from typing import Optional, List, Dict
 
+@dataclass
 class Player:
-    def __init__(self, data: dict):
-        self.tag: str = data.get("tag")
-        self.name: str = data.get("name")
-        self.town_hall_level: int = data.get("townHallLevel")
-        self.town_hall_weapon_level: int = data.get("townHallWeaponLevel")
-        self.exp_level: int = data.get("expLevel")
-        self.trophies: int = data.get("trophies")
-        self.best_trophies: int = data.get("bestTrophies")
-        self.war_stars: int = data.get("warStars")
-        self.attack_wins: int = data.get("attackWins")
-        self.defense_wins: int = data.get("defenseWins")
-        self.builder_hall_level: int = data.get("builderHallLevel")
-        self.builder_trophies: int = data.get("builderBaseTrophies")
-        self.builder_best_trophies: int = data.get("bestBuilderBaseTrophies")
-        self.donations: int = data.get("donations")
-        self.donations_received: int = data.get("donationsReceived")
-        self.clan_capital_contributions: int = data.get("clanCapitalContributions")
-        self.clan: Optional[Clan] = None
-        clan_data: dict = data.get("clan", {})
-        if clan_data:
-            self.clan = Clan(clan_data)
-        self.league: League = League(data.get("league", {}))
-        self.builder_league: League = League(data.get("builderBaseLeague", {}))
-        self.achievements: List[Achievement] = [Achievement(a) for a in data.get("achievements", [])]
-        self._achievement_map: Dict[Achievement] = {a.name: a for a in self.achievements}
-        self.labels: List[Label] = [Label(l) for l in data.get("labels", [])]
-        self.troops: List[Troop] = [Troop(t) for t in data.get("troops", [])]
-        self.heroes: Heroes[Hero] =  Heroes([Hero(h) for h in data.get("heroes", [])])
-        self.hero_equipment: List[Equipment] = [Equipment(e) for e in data.get("heroEquipment", [])]
-        self.spells: List[Spell] = [Spell(s) for s in data.get("spells", [])]
+    tag: Optional[str]
+    name: Optional[str]
+    town_hall_level: Optional[int]
+    town_hall_weapon_level: Optional[int]
+    exp_level: Optional[int]
+    trophies: Optional[int]
+    best_trophies: Optional[int]
+    war_stars: Optional[int]
+    attack_wins: Optional[int]
+    defense_wins: Optional[int]
+    builder_hall_level: Optional[int]
+    builder_trophies: Optional[int]
+    builder_best_trophies: Optional[int]
+    donations: Optional[int]
+    donations_received: Optional[int]
+    clan_capital_contributions: Optional[int]
+    clan: Optional[Clan]
+    league: League
+    builder_league: League
+    achievements: List[Achievement] = field(default_factory=list)
+    labels: List[Label] = field(default_factory=list)
+    troops: List[Troop] = field(default_factory=list)
+    heroes: Heroes = field(default_factory=Heroes)
+    hero_equipment: List[Equipment] = field(default_factory=list)
+    spells: List[Spell] = field(default_factory=list)
 
-    def get_achievement(self, name: str):
-        return self._achievement_map.get(name)
+    @classmethod
+    def from_dict(cls, data: Dict[str, Any]) -> 'Player':
+        clan_data = data.get("clan")
+        clan = Clan.from_dict(clan_data) if clan_data else None
+        achievements = [Achievement.from_dict(a) for a in data.get("achievements", [])]
+        labels = [Label.from_dict(l) for l in data.get("labels", [])]
+        troops = [Troop.from_dict(t) for t in data.get("troops", [])]
+        heroes_list = [Hero.from_dict(h) for h in data.get("heroes", [])]
+        heroes = Heroes(heroes_list)
+        hero_equipment = [Equipment.from_dict(e) for e in data.get("heroEquipment", [])]
+        spells = [Spell.from_dict(s) for s in data.get("spells", [])]
 
-    def to_dict(self):
-        def serialize(obj):
-            if isinstance(obj, list):
-                return [serialize(i) for i in obj]
-            elif hasattr(obj, "to_dict"):
-                return obj.to_dict()
-            elif hasattr(obj, "__dict__"):
-                return {k: serialize(v) for k, v in vars(obj).items()}
-            else:
-                return obj
-        
-        return {k: serialize(v) for k, v in vars(self).items() if not k.startswith("_")}
-    
-    def __str__(self):
-        import json
-        return json.dumps(self.to_dict(), indent=2)
+        return cls(
+            tag=data.get("tag"),
+            name=data.get("name"),
+            town_hall_level=data.get("townHallLevel"),
+            town_hall_weapon_level=data.get("townHallWeaponLevel"),
+            exp_level=data.get("expLevel"),
+            trophies=data.get("trophies"),
+            best_trophies=data.get("bestTrophies"),
+            war_stars=data.get("warStars"),
+            attack_wins=data.get("attackWins"),
+            defense_wins=data.get("defenseWins"),
+            builder_hall_level=data.get("builderHallLevel"),
+            builder_trophies=data.get("builderBaseTrophies"),
+            builder_best_trophies=data.get("bestBuilderBaseTrophies"),
+            donations=data.get("donations"),
+            donations_received=data.get("donationsReceived"),
+            clan_capital_contributions=data.get("clanCapitalContributions"),
+            clan=clan,
+            league=League.from_dict(data.get("league", {})),
+            builder_league=League.from_dict(data.get("builderBaseLeague", {})),
+            achievements=achievements,
+            labels=labels,
+            troops=troops,
+            heroes=heroes,
+            hero_equipment=hero_equipment,
+            spells=spells
+        )

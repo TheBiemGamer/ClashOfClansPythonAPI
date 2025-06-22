@@ -1,8 +1,14 @@
+from dataclasses import dataclass, field
+from typing import List, Dict, Optional, Iterator
+from coc_api.models.hero import Hero
+
+@dataclass
 class Heroes:
-    def __init__(self, hero_list):
-        self._heroes = {}
-        self._hero_list = hero_list
-        for hero in hero_list:
+    _hero_list: List[Hero] = field(default_factory=list)
+    _heroes: Dict[str, Hero] = field(init=False, default_factory=dict)
+
+    def __post_init__(self):
+        for hero in self._hero_list:
             key = self._format_attr_name(hero.name)
             self._heroes[key] = hero
             setattr(self, key, hero)
@@ -10,18 +16,8 @@ class Heroes:
     def _format_attr_name(self, name: str) -> str:
         return name.replace(" ", "").replace("-", "").replace("_", "")
 
-    def __getitem__(self, name: str):
+    def __getitem__(self, name: str) -> Optional[Hero]:
         return self._heroes.get(self._format_attr_name(name))
 
-    def __iter__(self):
+    def __iter__(self) -> Iterator[Hero]:
         return iter(self._hero_list)
-
-    def to_dict(self):
-        return [hero.to_dict() for hero in self._hero_list]
-
-    def __str__(self):
-        import json
-        return json.dumps(self.to_dict(), indent=2)
-
-    def __repr__(self):
-        return str(self)

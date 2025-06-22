@@ -1,25 +1,23 @@
+from dataclasses import dataclass, field
+from typing import List, Optional, Dict, Any
 from coc_api.models.equipment import Equipment
 
+@dataclass
 class Hero:
-    def __init__(self, data):
-        self.name = data.get("name")
-        self.level = data.get("level")
-        self.max_level = data.get("maxLevel")
-        self.equipment = [Equipment(e) for e in data.get("equipment", [])]
-        self.village = data.get("village")
+    name: Optional[str]
+    level: Optional[int]
+    max_level: Optional[int]
+    village: Optional[str]
+    equipment: List[Equipment] = field(default_factory=list)
 
-    def to_dict(self):
-        return {
-            "name": self.name,
-            "level": self.level,
-            "max_level": self.max_level,
-            "village": self.village,
-            "equipment": [e.to_dict() for e in self.equipment]
-        }
-    
-    def __str__(self):
-        import json
-        return json.dumps(self.to_dict(), indent=2)
-    
-    def __repr__(self):
-        return str(self)
+    @classmethod
+    def from_dict(cls, data: Dict[str, Any]) -> 'Hero':
+        equipment_data = data.get("equipment", [])
+        equipment = [Equipment.from_dict(e) for e in equipment_data]
+        return cls(
+            name=data.get("name"),
+            level=data.get("level"),
+            max_level=data.get("maxLevel"),
+            village=data.get("village"),
+            equipment=equipment
+        )
