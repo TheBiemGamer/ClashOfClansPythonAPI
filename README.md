@@ -13,8 +13,8 @@ pip install -i https://test.pypi.org/simple/ clash-of-clans-api
 ```python
 import asyncio
 import os
-from coc_api.client import ClashOfClansAPI
-from coc_api.models.player import Player
+from coc_api import ClashOfClansAPI
+from coc_api.models import Player
 
 API_TOKEN = os.getenv("API_TOKEN")
 PLAYER_TAG = "#L8PRCJVL2"
