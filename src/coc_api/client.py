@@ -4,7 +4,7 @@ from httpx import HTTPStatusError
 
 from coc_api.endpoints import PlayerEndpoints
 from coc_api.endpoints import ClanEndpoints
-from coc_api.exceptions import InvalidTokenError
+from coc_api.exceptions import InvalidTokenError, NotFoundError
 
 BASE_URL = "https://api.clashofclans.com/v1"
 PROXY_URL = "https://cocproxy.royaleapi.dev/v1"
@@ -58,7 +58,9 @@ class ClashOfClansAPI:
             response.raise_for_status()
             return response.json()
         except HTTPStatusError as http_err:
-            if http_err.response.status_code == 403 and http_err.response.json().get("reason") == "accessDenied":
+            if http_err.response.status_code == 404 and http_err.response.json().get("reason") == "notFound":
+                raise NotFoundError("Can't find the requested resource.")
+            elif http_err.response.status_code == 403 and http_err.response.json().get("reason") == "accessDenied":
                 raise InvalidTokenError("Incorrect API token.")
             elif http_err.response.status_code == 403 and http_err.response.json().get("reason") == "accessDenied.invalidIp":
                 raise InvalidTokenError(f"{http_err.response.json().get("message").lstrip("Invalid authorization:")}.")
