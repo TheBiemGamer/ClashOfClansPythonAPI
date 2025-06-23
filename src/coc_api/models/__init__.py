@@ -11,6 +11,7 @@ from .player import Player
 from .spell import Spell
 from .troop import Troop
 from .clan_capital_house import ClanCapitalHouse
+from .goldpass import GoldPass
 
 __all__ = [
     "Achievement",
@@ -26,4 +27,5 @@ __all__ = [
     "Spell",
     "Troop",
     "ClanCapitalHouse",
+    "GoldPass",
 ]

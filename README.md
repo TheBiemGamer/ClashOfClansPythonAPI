@@ -76,3 +76,11 @@ Main client class to interact with the Clash of Clans API.
 * `get(clan_tag: str) -> Clan`
 
   Fetch detailed information about a clan.
+
+## GoldPassEndpoint
+
+* `get(unix: bool = False) -> GoldPass`
+
+  Fetch start and endtime of the current goldpass season.
+
+  * `unix`: If `True` returns start_time and end_time as unix timestampts instead of `datime.datime`. Defaults to False.

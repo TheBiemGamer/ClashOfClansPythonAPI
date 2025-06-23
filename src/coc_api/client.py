@@ -2,8 +2,7 @@ import httpx
 from typing import Optional
 from httpx import HTTPStatusError
 
-from coc_api.endpoints import PlayerEndpoints
-from coc_api.endpoints import ClanEndpoints
+from coc_api.endpoints import PlayerEndpoints, ClanEndpoints, GoldPassEndpoints
 from coc_api.exceptions import InvalidTokenError, NotFoundError
 
 BASE_URL = "https://api.clashofclans.com/v1"
@@ -36,6 +35,7 @@ class ClashOfClansAPI:
         # Initialize endpoint interfaces
         self.players = PlayerEndpoints(self)
         self.clans = ClanEndpoints(self)
+        self.goldpass = GoldPassEndpoints(self)
 
     async def _get(self, endpoint: str, params: Optional[dict] = None) -> dict:
         """
