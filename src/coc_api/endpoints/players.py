@@ -2,9 +2,10 @@ from __future__ import annotations
 from typing import TYPE_CHECKING
 from urllib.parse import quote
 from coc_api.models import Player
+from coc_api.utils import cache_result
 
 if TYPE_CHECKING:
-    from coc_api import ClashOfClansAPI
+    from coc_api import ClashOfClansAPI, Cache
 
 class PlayerEndpoints:
     """
@@ -13,9 +14,11 @@ class PlayerEndpoints:
     Args:
         api (ClashOfClansAPI): Instance of the main API client.
     """
-    def __init__(self, api: 'ClashOfClansAPI'):
+    def __init__(self, api: 'ClashOfClansAPI', cache: 'Cache'):
         self.api = api
+        self.cache = cache
 
+    @cache_result(Player)
     async def get(self, player_tag: str) -> Player:
         """
         Retrieve player data by player tag.
@@ -32,7 +35,7 @@ class PlayerEndpoints:
         """
         encoded_tag = quote(player_tag)
         data = await self.api._get(f"/players/{encoded_tag}")
-        return Player.from_dict(data) 
+        return Player.from_dict(data)
     
     async def verify_token(self, player_tag: str, token: str) -> dict:
         """

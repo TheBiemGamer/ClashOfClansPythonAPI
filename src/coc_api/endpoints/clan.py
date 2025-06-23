@@ -2,9 +2,10 @@ from __future__ import annotations
 from typing import TYPE_CHECKING
 from urllib.parse import quote
 from coc_api.models import Clan
+from coc_api.utils import cache_result
 
 if TYPE_CHECKING:
-    from coc_api import ClashOfClansAPI
+    from coc_api import ClashOfClansAPI, Cache
 
 class ClanEndpoints:
     """
@@ -13,9 +14,11 @@ class ClanEndpoints:
     Args:
         api (ClashOfClansAPI): Instance of the main API client.
     """
-    def __init__(self, api: ClashOfClansAPI):
+    def __init__(self, api: ClashOfClansAPI, cache: "Cache"):
         self.api = api
+        self.cache = cache
 
+    @cache_result(Clan)
     async def get(self, clan_tag: str) -> Clan:
         """
         Retrieve clan data by clan tag.

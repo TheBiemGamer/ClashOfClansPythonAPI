@@ -20,7 +20,7 @@ class ClashOfClansAPI:
         timeout (int, optional): Timeout in seconds for API requests. Defaults to 10.
         proxy (bool, optional): Whether to route requests through RoyaleAPI's proxy. Defaults to False.
     """
-    def __init__(self, token: str, timeout: int = 10, proxy: bool = False):
+    def __init__(self, token: str, timeout: int = 10, proxy: bool = False, cache_timeout_minutes: int = 30):
         if not token:
             raise InvalidTokenError("API token must be provided and cannot be empty.")
 
@@ -33,8 +33,10 @@ class ClashOfClansAPI:
         self.proxy = proxy
 
         # Initialize endpoint interfaces
-        self.players = PlayerEndpoints(self)
-        self.clans = ClanEndpoints(self)
+        from coc_api import Cache
+        self.cache = Cache(cache_timeout_minutes)
+        self.players = PlayerEndpoints(self, self.cache)
+        self.clans = ClanEndpoints(self, self.cache)
         self.goldpass = GoldPassEndpoints(self)
 
     async def _get(self, endpoint: str, params: Optional[dict] = None) -> dict:
