@@ -1,7 +1,6 @@
 import httpx
 from typing import Optional
 from httpx import HTTPStatusError
-
 from coc_api.endpoints import PlayerEndpoints, ClanEndpoints, GoldPassEndpoints
 from coc_api.exceptions import InvalidTokenError, NotFoundError
 

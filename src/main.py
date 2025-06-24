@@ -2,6 +2,7 @@ import asyncio
 import os
 from coc_api import ClashOfClansAPI
 from coc_api.models import Player
+from dotenv import load_dotenv
 
 API_TOKEN = os.getenv("API_TOKEN")
 PLAYER_TAG = "#L8PRCJVL2"
@@ -18,7 +19,8 @@ async def main() -> None:
     try:
         # Fetch player data
         player: Player = await api.players.get(PLAYER_TAG)
-        print(player.clan)
+        clan = await api.clans.get(player.clan.tag)
+        print(clan.member_list)
     except Exception as e:
         print("An error occurred while fetching player data:")
         print(repr(e))
@@ -26,4 +28,5 @@ async def main() -> None:
         await api.close()
 
 if __name__ == "__main__":
+    load_dotenv()
     asyncio.run(main())

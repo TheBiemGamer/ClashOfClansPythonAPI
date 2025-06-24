@@ -12,6 +12,7 @@ if TYPE_CHECKING:
 class Player:
     tag: Optional[str]
     name: Optional[str]
+    role: Optional[str] # Clan only
     town_hall_level: Optional[int]
     town_hall_weapon_level: Optional[int]
     exp_level: Optional[int]
@@ -22,6 +23,8 @@ class Player:
     defense_wins: Optional[int]
     builder_hall_level: Optional[int]
     builder_trophies: Optional[int]
+    clan_rank: Optional[int]
+    previous_clan_rank: Optional[int]
     builder_best_trophies: Optional[int]
     donations: Optional[int]
     donations_received: Optional[int]
@@ -80,5 +83,8 @@ class Player:
             heroes=heroes,
             hero_equipment=hero_equipment,
             spells=spells,
-            player_house=player_house
+            player_house=player_house,
+            role=data.get("role"),
+            clan_rank=data.get("clanRank"),
+            previous_clan_rank=data.get("previousClanRank")
         )
